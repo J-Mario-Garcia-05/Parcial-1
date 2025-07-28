@@ -38,8 +38,69 @@ class Evaluacion:
             print("Nota en productividad fuera de rango")
     def promedio(self):
         return (self.productividad + self.equipo + self.puntualidad) / 3
+    def estado(self, promedio):
+        if promedio >=  7:
+            estado = "Satisfactorio"
+            return estado
+        else:
+            estado = "Debe mejorar"
+            return estado
 
 class Contacto:
     def __init__(self, email, telefono):
         self.email = email
         self.telefono = telefono
+
+empleados = {}
+opcion = "0"
+while opcion != "5":
+    print("\t==CONTROL DE EMPLEADOS==")
+    print("1.Registrar empleados")
+    print("2.Mostrar información de empleados registrados")
+    print("3.Salir")
+    opcion = input("\nSeleccione una opción: ")
+    try:
+        match opcion:
+            case "1":
+                cantidad = int(input("¿Cuántos empleados desea registrar? (máx 10): "))
+                if cantidad < 0 or cantidad > 10:
+                    print("Cantidad no fuera de rango")
+                    continue
+                a = 0
+                while a < cantidad:
+                    print(f"Datos del empleado {a + 1}:")
+                    codigo = input("Codigo del empleado: ")
+                    nombre = input("Nombre completo: ")
+                    departamento = input("Departamento: ")
+                    antiguedad = input("Antigüedad dentro de la empresa: ")
+                    nuevo_empleado = Empleado(nombre, departamento, antiguedad)
+                    print("\tDatos de evaluación (0-10):")
+                    puntualidad = int(input("\tPuntualidad: "))
+                    equipo = int(input("\tTrabajo en equipo:"))
+                    productividad = int(input("\tProductividad: "))
+                    nueva_evaluacion = Evaluacion(puntualidad, equipo, productividad)
+                    observacion = input("\tObservaciones: ")
+                    promedio = nueva_evaluacion.promedio()
+                    estado = nueva_evaluacion.estado(promedio)
+                    print("\t\tDatos de contacto: ")
+                    telefono = int(input("\t\tTelefono: "))
+                    correo = input("\t\tCorreo: ")
+                    empleados[codigo] = {
+                        "nombre": nombre,
+                        "departamento": departamento,
+                        "antiguedad": antiguedad,
+                        "evaluacion":{
+                            "puntualidad": puntualidad,
+                            "equipo": equipo,
+                            "productividad": productividad,
+                            "observacion": observacion,
+                            "promedio": promedio,
+                            "estado": estado,
+                        },
+                        "contacto": {
+                            "telefono": telefono,
+                            "correo": correo,
+                        }
+                    }
+    except Exception as e:
+        print("Ha ocurrido un error inseperado, " + str(e))
