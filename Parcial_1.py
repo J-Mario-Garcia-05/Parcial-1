@@ -3,6 +3,8 @@ class Empleado:
         self.nombre = nombre
         self.departamento = departamento
         self.antiguedad = antiguedad
+    def mostrar(self):
+        print(f"Nombre: {self.nombre}, departamento: {self.departamento}, antigüedad en la empresa: {self.antiguedad}")
 
 class Evaluacion:
     def __init__(self, puntualidad, equipo, productividad):
@@ -45,15 +47,19 @@ class Evaluacion:
         else:
             estado = "Debe mejorar"
             return estado
+    def mostrar(self, promedio):
+        print(f"Nota en puntualidad: {self.puntualidad}, nota de trabajo en equipo: {self.equipo}, nota de productividad: {self.productividad}")
 
 class Contacto:
     def __init__(self, email, telefono):
         self.email = email
         self.telefono = telefono
+    def mostrar(self):
+        print(f"Correo: {self.email}, telefono: {self.telefono}")
 
 empleados = {}
 opcion = "0"
-while opcion != "5":
+while opcion != "3":
     print("\t==CONTROL DE EMPLEADOS==")
     print("1.Registrar empleados")
     print("2.Mostrar información de empleados registrados")
@@ -85,6 +91,7 @@ while opcion != "5":
                     print("\t\tDatos de contacto: ")
                     telefono = int(input("\t\tTelefono: "))
                     correo = input("\t\tCorreo: ")
+                    contacto = Contacto(correo, telefono)
                     empleados[codigo] = {
                         "nombre": nombre,
                         "departamento": departamento,
@@ -102,5 +109,22 @@ while opcion != "5":
                             "correo": correo,
                         }
                     }
+                    a += 1
+            case "2":
+                if empleados:
+                    print("Empleados registrados:")
+                    for codigo, empleado in empleados.items():
+                        print(f"Código del empleado {codigo}:")
+                        mostrar_empleado = Empleado (empleado["nombre"], empleado["departamento"], empleado["antiguedad"])
+                        mostrar_empleado.mostrar()
+                        print("Notas de evaluación: ")
+                        print(f"\tPuntualidad: {empleado["evaluacion"]["puntualidad"]}, trabajo en equipo: {empleado["evaluacion"]["equipo"]}, productividad: {empleado["evaluacion"]["productividad"]}")
+                        print(f"\tObservaiones: {empleado["evaluacion"]['observacion']}")
+                        print(f"\tPromedio: {empleado["evaluacion"]['promedio']}, estado: {empleado["evaluacion"]['estado']}")
+                        print("Información de contacto: ")
+                        print(f"\tTeléfono: {empleado['contacto']['telefono']}")
+
+                else:
+                    print("No se ha registrado ningún empleado")
     except Exception as e:
         print("Ha ocurrido un error inseperado, " + str(e))
